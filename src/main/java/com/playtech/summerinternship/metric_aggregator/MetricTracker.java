@@ -60,17 +60,17 @@ public class MetricTracker {
      * @return list of path and datapoint list pairs
      */
     public synchronized List<PathDataListPair> getChangedMetrics() {
-        List<PathDataListPair> changedFiles = new ArrayList<>();
+        List<PathDataListPair> changedFilesData = new ArrayList<>();
 
         for (String path : metricsOf.keySet()) {
             for (TimedMetric timedMetric : metricsOf.get(path)) {
                 if (!timedMetric.isDirty()) continue;
 
                 String fullPath = path + "." + timedMetric.getMetricName();
-                changedFiles.add(new PathDataListPair(fullPath, timedMetric.getCollatedData()));
+                changedFilesData.add(new PathDataListPair(fullPath, timedMetric.getCollatedData()));
                 timedMetric.setDirty(false);
             }
         }
-        return changedFiles;
+        return changedFilesData;
     }
 }
