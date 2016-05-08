@@ -12,7 +12,7 @@ import java.util.List;
 import java.util.regex.Pattern;
 
 /**
- * Created by madis_000 on 05/05/2016.
+ * Class of static functions dealing with file IO
  */
 public class FileUtility {
     private static final Path defaultRoot = Paths.get("metrics");
@@ -39,9 +39,9 @@ public class FileUtility {
      * Reads data from the file specified by path.
      * Assumes file is formatted in text format and every line contains two values – timestamp and value, and sorted according to timestamp.
      * @param file path of the file to be read
-     * @param start 
-     * @param end
-     * @return
+     * @param start minimum timestamp of data to be read
+     * @param end maximum timestamp of data to be read
+     * @return list of datapoints read from the file
      * @throws IOException
      */
     public static List<DataPoint> readDataFromFile(Path file, long start, long end) throws IOException {
@@ -62,12 +62,23 @@ public class FileUtility {
         return data;
     }
 
+    /**
+     * Collates data from all files that match incoming regex pattern.
+     * @param pattern regex pattern for files
+     * @param start minimum timestamp of data to be read
+     * @param end maximum timestamp of data to be read
+     * @return List of pathnames and lists of datapoints
+     * @throws IOException
+     */
     public static List<AggregatedData> getRequestedData(String pattern, long start, long end) throws IOException {
         DataComposingFileVisitor visitor = new DataComposingFileVisitor(pattern, start, end);
         Files.walkFileTree(defaultRoot, visitor);
         return visitor.getComposedData();
     }
 
+    /**
+     * File visitor for the purpose of collecting data.
+     */
     private static class DataComposingFileVisitor extends SimpleFileVisitor<Path> {
         private List<AggregatedData> composedData = new ArrayList<>();
         private final Pattern fileRegex;
@@ -84,7 +95,7 @@ public class FileUtility {
         public FileVisitResult visitFile(Path file, BasicFileAttributes attrs) throws IOException {
             Path pathWithoutRoot = defaultRoot.relativize(file);
             if ( fileRegex.matcher(pathWithoutRoot.toString()).matches() ) {
-                String pathName = pathWithoutRoot.toString().replace(File.separator, ".");
+                String pathName = pathWithoutRoot.toString().replace(File.separator, "."); // converts path into generalized format
 
                 composedData.add(new AggregatedData(pathName, readDataFromFile(file, start, end)));
             }

@@ -4,7 +4,7 @@ import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
 
 /**
- * Created by Madis on 6.05.2016.
+ * Data structure that holds the values of a data request query.
  */
 
 @XmlRootElement

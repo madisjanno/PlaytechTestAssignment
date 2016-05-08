@@ -1,7 +1,7 @@
 package com.playtech.summerinternship.calculator;
 
 /**
- * Created by madis_000 on 05/05/2016.
+ * Calculator for the maximum value of inputted data values.
  */
 public class MaxCalculator implements MetricCalculator {
     private long max = 0;
@@ -22,7 +22,7 @@ public class MaxCalculator implements MetricCalculator {
     }
 
     @Override
-    public MetricCalculator makeCopy() {
+    public MetricCalculator makeSimilarCalculator() {
         return new MaxCalculator();
     }
 }

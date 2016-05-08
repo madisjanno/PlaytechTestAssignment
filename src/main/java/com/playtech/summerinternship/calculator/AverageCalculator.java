@@ -4,7 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * Created by madis_000 on 05/05/2016.
+ * Calculator for the average value of inputted data values.
  */
 public class AverageCalculator implements MetricCalculator {
     private final List<Long> values = new ArrayList<>();
@@ -39,7 +39,7 @@ public class AverageCalculator implements MetricCalculator {
     }
 
     @Override
-    public MetricCalculator makeCopy() {
+    public MetricCalculator makeSimilarCalculator() {
         return new AverageCalculator();
     }
 }

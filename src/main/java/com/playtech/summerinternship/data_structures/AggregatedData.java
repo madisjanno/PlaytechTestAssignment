@@ -6,7 +6,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * Created by Madis on 6.05.2016.
+ * Data structure for holding pathname and a list of datapoints. Designed to be converted to JSON
  */
 
 @XmlRootElement

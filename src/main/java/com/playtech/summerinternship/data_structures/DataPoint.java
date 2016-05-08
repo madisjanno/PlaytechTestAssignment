@@ -1,7 +1,7 @@
 package com.playtech.summerinternship.data_structures;
 
 /**
- * Created by madis_000 on 05/05/2016.
+ * Data structure for holding a timestamp and a value.
  */
 
 public class DataPoint {

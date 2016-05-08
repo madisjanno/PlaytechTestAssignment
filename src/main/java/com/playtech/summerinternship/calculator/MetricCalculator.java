@@ -1,7 +1,7 @@
 package com.playtech.summerinternship.calculator;
 
 /**
- * Created by madis_000 on 05/05/2016.
+ * Interface for a class that calculates a value based on inputted data values.
  */
 public interface MetricCalculator {
 
@@ -9,5 +9,5 @@ public interface MetricCalculator {
 
     long getCalculatedValue();
 
-    MetricCalculator makeCopy();
+    MetricCalculator makeSimilarCalculator();
 }

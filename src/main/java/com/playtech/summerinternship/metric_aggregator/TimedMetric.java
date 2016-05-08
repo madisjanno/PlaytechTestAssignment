@@ -64,7 +64,7 @@ public class TimedMetric {
         long localStamp = timestampTolocalStamp(timestamp);
 
         if (!calculatorMap.containsKey(localStamp)) {
-            calculatorMap.put(localStamp, calculatorPrototype.makeCopy());
+            calculatorMap.put(localStamp, calculatorPrototype.makeSimilarCalculator());
         }
     }
 

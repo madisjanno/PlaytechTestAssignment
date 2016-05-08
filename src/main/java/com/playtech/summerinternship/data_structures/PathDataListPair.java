@@ -5,7 +5,7 @@ import com.playtech.summerinternship.data_structures.DataPoint;
 import java.util.List;
 
 /**
- * Created by madis_000 on 05/05/2016.
+ * Data scructure for holding a path and a list of datapoints.
  */
 public class PathDataListPair {
     private final String path;
