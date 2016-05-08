@@ -85,12 +85,10 @@ public class MetricServer implements AutoCloseable, Runnable {
 
         @Override
         public void run() {
-            try {
-                BufferedReader in = new BufferedReader(new InputStreamReader(socket.getInputStream()));
+            try ( BufferedReader in = new BufferedReader(new InputStreamReader(socket.getInputStream())) ){
                 String inMessage = in.readLine();
                 String[] parts = inMessage.split(" "); // path, value, timestamp
                 metricTracker.addData( parts[0], new DataPoint( Long.parseLong(parts[2]), Long.parseLong(parts[1]) ) );
-                socket.close();
             }
             catch (Exception e) {
                 throw new RuntimeException(e);
