@@ -69,12 +69,15 @@ public class MetricServer implements AutoCloseable, Runnable {
      * Calculates metric values and writes updates to files.
      * @throws IOException
      */
-    public synchronized void writeChangedMetricsToFiles() throws IOException {
-        List<PathDataListPair> changedMetrics = metricTracker.getChangedMetrics();
-        for (PathDataListPair changedMetric : changedMetrics) {
-            FileUtility.writeDataToFile(changedMetric);
+    public void writeChangedMetricsToFiles() throws IOException {
+        synchronized (filewritelock) {
+            List<PathDataListPair> changedMetrics = metricTracker.getChangedMetrics();
+            for (PathDataListPair changedMetric : changedMetrics) {
+                FileUtility.writeDataToFile(changedMetric);
+            }
         }
     }
+    private final Object filewritelock = new Object();
 
     private class ConnectionHandler implements Runnable {
         private final Socket socket;
