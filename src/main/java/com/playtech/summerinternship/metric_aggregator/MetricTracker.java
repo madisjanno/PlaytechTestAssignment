@@ -1,21 +1,29 @@
-package com.playtech.summerinternship;
+package com.playtech.summerinternship.metric_aggregator;
 
+import com.playtech.summerinternship.data_structures.DataPoint;
+import com.playtech.summerinternship.data_structures.PathDataListPair;
 import com.playtech.summerinternship.calculator.AverageCalculator;
 import com.playtech.summerinternship.calculator.MaxCalculator;
-import com.playtech.summerinternship.metric_aggregator.TimedMetric;
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
 /**
- * Created by madis_000 on 05/05/2016.
+ * Class for tracking a list of metrics
  */
 public class MetricTracker {
-    Map<String, List<TimedMetric>> metricsOf = new HashMap<>();
+    private Map<String, List<TimedMetric>> metricsOf = new HashMap<>(); // String = path
 
-    public void addData(String path, DataPoint data) {
+    /**
+     * Adds data to all relevant metrics
+     * @param path path of the metric
+     * @param data added data
+     */
+    public synchronized void addData(String path, DataPoint data) {
+        path = path.replace(".", File.separator); // converts inputted path into actual filepath
         initializeIfNeeded(path);
 
         for (TimedMetric metric : metricsOf.get(path)) {
@@ -23,12 +31,19 @@ public class MetricTracker {
         }
     }
 
+    /**
+     * Initializes the tracked metrics of a new path
+     * @param path the initialized path
+     */
     private void initializeIfNeeded(String path) {
         if (!metricsOf.containsKey(path)) {
             metricsOf.put(path, composeTrackedMetricsList());
         }
     }
 
+    /**
+     * @return List of tracked metrics for use in initialization
+     */
     private List<TimedMetric> composeTrackedMetricsList() {
         List<TimedMetric> metrics = new ArrayList<>();
 
@@ -40,8 +55,13 @@ public class MetricTracker {
         return metrics;
     }
 
-    public List<PathDataListPair> getChangedMetrics() {
+    /**
+     * Composes a list of all changed metrics and their data.
+     * @return list of path and datapoint list pairs
+     */
+    public synchronized List<PathDataListPair> getChangedMetrics() {
         List<PathDataListPair> changedFiles = new ArrayList<>();
+
         for (String path : metricsOf.keySet()) {
             for (TimedMetric timedMetric : metricsOf.get(path)) {
                 if (!timedMetric.isDirty()) continue;
